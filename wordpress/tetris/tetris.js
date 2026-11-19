@@ -452,9 +452,7 @@ boardCanvas.addEventListener('touchend', (e) => {
   if (dx < 12 && Math.abs(dy) < 12 && dt < 300) {
     const now = performance.now();
     if (now - lastTap < 300) {
-      softDrop = true;
-      drop();
-      softDrop = false;
+      hardDrop();
       lastTap = -Infinity;
     } else {
       tryRotate(1);
