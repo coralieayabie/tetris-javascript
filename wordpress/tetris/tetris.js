@@ -418,6 +418,41 @@ document.querySelectorAll('.touch button').forEach((btn) => {
   btn.addEventListener('mouseleave', release);
 });
 
+const touchCapable = (window.matchMedia && matchMedia('(pointer: coarse)').matches) || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+if (touchCapable) (document.getElementById('tetris-game') || document.body).classList.add('touch-on');
+
+let touchStart = null;
+boardCanvas.addEventListener('touchstart', (e) => {
+  if (gameOver || paused) return;
+  const t = e.changedTouches[0];
+  touchStart = { x: t.clientX, y: t.clientY, t: performance.now(), lastX: t.clientX, lastY: t.clientY };
+}, { passive: true });
+boardCanvas.addEventListener('touchmove', (e) => {
+  if (!touchStart || gameOver || paused) return;
+  e.preventDefault();
+  const t = e.changedTouches[0];
+  if (Math.abs(t.clientX - touchStart.lastX) >= BLOCK) {
+    move(t.clientX > touchStart.lastX ? 1 : -1);
+    touchStart.lastX = t.clientX;
+  }
+  if (t.clientY - touchStart.lastY >= BLOCK) {
+    softDrop = true;
+    drop();
+    softDrop = false;
+    touchStart.lastY = t.clientY;
+  }
+}, { passive: false });
+boardCanvas.addEventListener('touchend', (e) => {
+  if (!touchStart) return;
+  const dt = performance.now() - touchStart.t;
+  const t = e.changedTouches[0];
+  const dx = Math.abs(t.clientX - touchStart.x);
+  const dy = t.clientY - touchStart.y;
+  if (dx < 12 && Math.abs(dy) < 12 && dt < 300) tryRotate(1);
+  else if (dy > 60 && dt < 250) hardDrop();
+  touchStart = null;
+}, { passive: true });
+
 grid = newGrid();
 refillBag();
 spawn();

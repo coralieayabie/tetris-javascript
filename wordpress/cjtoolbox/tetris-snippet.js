@@ -1,8 +1,8 @@
 // Tetris pour plugin JS type cjtoolbox — colle CE SEUL fichier dans le champ JS (jamais le HTML entier).
 document.addEventListener('DOMContentLoaded', () => {
   if (!/\/tetris\/?/.test(location.pathname)) return;
-  const CSS = "#tetris-game {\n  --bg: #1b1b30;\n  --panel: #15152a;\n  --border: #2d2d52;\n  --text: #e6e6ff;\n  box-sizing: border-box;\n  color: var(--text);\n  font-family: \"Segoe UI\", Arial, sans-serif;\n  user-select: none;\n  touch-action: manipulation;\n  padding: 16px 0;\n}\n#tetris-game * { box-sizing: border-box; margin: 0; padding: 0; }\n#tetris-game .game { display: flex; gap: 14px; align-items: flex-start; justify-content: center; flex-wrap: wrap; }\n#tetris-game .board-wrap { position: relative; }\n#tetris-game canvas#board {\n  background: #05050c;\n  border: 2px solid var(--border);\n  border-radius: 6px;\n  display: block;\n  height: min(600px, 82vh);\n  width: auto;\n}\n#tetris-game .overlay {\n  position: absolute;\n  inset: 0;\n  display: none;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: 10px;\n  background: rgba(5, 5, 16, 0.85);\n  border-radius: 6px;\n  text-align: center;\n  font-size: 20px;\n  font-weight: bold;\n}\n#tetris-game .overlay.show { display: flex; }\n#tetris-game .overlay small { font-size: 13px; font-weight: normal; color: #aaaacc; }\n#tetris-game .side { display: flex; flex-direction: column; gap: 10px; width: 150px; }\n#tetris-game .panel {\n  background: var(--panel);\n  border: 1px solid var(--border);\n  border-radius: 8px;\n  padding: 10px;\n  text-align: center;\n}\n#tetris-game .panel h2 {\n  font-size: 11px;\n  text-transform: uppercase;\n  letter-spacing: 2px;\n  color: #8a8ac0;\n  margin-bottom: 6px;\n}\n#tetris-game .panel .value { font-size: 22px; font-weight: bold; font-variant-numeric: tabular-nums; }\n#tetris-game .panel canvas { display: block; margin: 0 auto; }\n#tetris-game .hint { font-size: 11px; color: #8a8ac0; line-height: 1.8; }\n#tetris-game .touch { display: none; margin-top: 12px; gap: 8px; flex-wrap: wrap; justify-content: center; max-width: 320px; margin-left: auto; margin-right: auto; }\n#tetris-game .touch button {\n  width: 54px;\n  height: 54px;\n  font-size: 22px;\n  background: #1d1d3a;\n  color: #e6e6ff;\n  border: 1px solid #3a3a66;\n  border-radius: 10px;\n}\n#tetris-game .touch button:active { background: #33336a; }\n@media (pointer: coarse) {\n  #tetris-game .touch { display: flex; }\n  #tetris-game .hint { display: none; }\n}\n@media (max-width: 560px) {\n  #tetris-game .game { gap: 8px; }\n  #tetris-game .side { width: 108px; }\n}\n#tetris-game h1 { font-size: 28px; letter-spacing: 8px; margin-bottom: 12px; color: #7df9ff; text-shadow: 0 0 14px rgba(125, 249, 255, 0.5); text-align: center; }\n";
-  const MARKUP = "<h1>TETRIS</h1>\n<div class=\"game\">\n  <div class=\"board-wrap\">\n    <canvas id=\"board\" width=\"300\" height=\"600\"></canvas>\n    <div class=\"overlay\" id=\"overlay\">\n      <div id=\"overlay-title\">PAUSE</div>\n      <small id=\"overlay-sub\">Appuie sur P pour reprendre</small>\n    </div>\n  </div>\n  <div class=\"side\">\n    <div class=\"panel\"><h2>Garde</h2><canvas id=\"hold\" width=\"120\" height=\"70\"></canvas></div>\n    <div class=\"panel\"><h2>Suivant</h2><canvas id=\"next\" width=\"120\" height=\"70\"></canvas></div>\n    <div class=\"panel\"><h2>Score</h2><div class=\"value\" id=\"score\">0</div></div>\n    <div class=\"panel\"><h2>Lignes</h2><div class=\"value\" id=\"lines\">0</div></div>\n    <div class=\"panel\"><h2>Niveau</h2><div class=\"value\" id=\"level\">1</div></div>\n    <div class=\"panel hint\">\n      &#8592; &#8594; : d&eacute;placer<br>\n      &#8595; : descente rapide<br>\n      &#8593; / X : tourner<br>\n      Z : tourner (inverse)<br>\n      Espace : chute instantan&eacute;e<br>\n      C : garder la pi&egrave;ce<br>\n      P : pause &mdash; Entr&eacute;e : rejouer\n    </div>\n  </div>\n</div>\n<div class=\"touch\">\n  <button data-key=\"ArrowLeft\" aria-label=\"Gauche\">&#8592;</button>\n  <button data-key=\"ArrowDown\" aria-label=\"Descendre\">&#8595;</button>\n  <button data-key=\"ArrowUp\" aria-label=\"Tourner\">&#10227;</button>\n  <button data-key=\"Space\" aria-label=\"Chute\">&#10515;</button>\n  <button data-key=\"ArrowRight\" aria-label=\"Droite\">&#8594;</button>\n</div>\n";
+  const CSS = "#tetris-game {\n  --bg: #1b1b30;\n  --panel: #15152a;\n  --border: #2d2d52;\n  --text: #e6e6ff;\n  box-sizing: border-box;\n  color: var(--text);\n  font-family: \"Segoe UI\", Arial, sans-serif;\n  user-select: none;\n  touch-action: manipulation;\n  padding: 16px 0;\n}\n#tetris-game * { box-sizing: border-box; margin: 0; padding: 0; }\n#tetris-game .game { display: flex; gap: 14px; align-items: flex-start; justify-content: center; flex-wrap: wrap; }\n#tetris-game .board-wrap { position: relative; }\n#tetris-game canvas#board {\n  background: #05050c;\n  touch-action: none;\n  border: 2px solid var(--border);\n  border-radius: 6px;\n  display: block;\n  height: min(600px, 82vh);\n  width: auto;\n}\n#tetris-game .overlay {\n  position: absolute;\n  inset: 0;\n  display: none;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: 10px;\n  background: rgba(5, 5, 16, 0.85);\n  border-radius: 6px;\n  text-align: center;\n  font-size: 20px;\n  font-weight: bold;\n}\n#tetris-game .overlay.show { display: flex; }\n#tetris-game .overlay small { font-size: 13px; font-weight: normal; color: #aaaacc; }\n#tetris-game .side { display: flex; flex-direction: column; gap: 10px; width: 150px; }\n#tetris-game .panel {\n  background: var(--panel);\n  border: 1px solid var(--border);\n  border-radius: 8px;\n  padding: 10px;\n  text-align: center;\n}\n#tetris-game .panel h2 {\n  font-size: 11px;\n  text-transform: uppercase;\n  letter-spacing: 2px;\n  color: #8a8ac0;\n  margin-bottom: 6px;\n}\n#tetris-game .panel .value { font-size: 22px; font-weight: bold; font-variant-numeric: tabular-nums; }\n#tetris-game .panel canvas { display: block; margin: 0 auto; }\n#tetris-game .hint { font-size: 11px; color: #8a8ac0; line-height: 1.8; }\n#tetris-game .touch { display: none; margin-top: 12px; gap: 8px; flex-wrap: wrap; justify-content: center; max-width: 320px; margin-left: auto; margin-right: auto; }\n#tetris-game .touch button {\n  width: 54px;\n  height: 54px;\n  font-size: 22px;\n  background: #1d1d3a;\n  color: #e6e6ff;\n  border: 1px solid #3a3a66;\n  border-radius: 10px;\n}\n#tetris-game .touch button:active { background: #33336a; }\n@media (pointer: coarse) {\n  #tetris-game .touch { display: flex; }\n  #tetris-game .hint { display: none; }\n}\n#tetris-game.touch-on .touch { display: flex; }\n#tetris-game.touch-on .hint { display: none; }\n@media (max-width: 560px) {\n  #tetris-game .game { gap: 8px; }\n  #tetris-game .side { width: 108px; }\n}\n#tetris-game h1 { font-size: 28px; letter-spacing: 8px; margin-bottom: 12px; color: #7df9ff; text-shadow: 0 0 14px rgba(125, 249, 255, 0.5); text-align: center; }\n";
+  const MARKUP = "<h1>TETRIS</h1>\n<div class=\"game\">\n  <div class=\"board-wrap\">\n    <canvas id=\"board\" width=\"300\" height=\"600\"></canvas>\n    <div class=\"overlay\" id=\"overlay\">\n      <div id=\"overlay-title\">PAUSE</div>\n      <small id=\"overlay-sub\">Appuie sur P pour reprendre</small>\n    </div>\n  </div>\n  <div class=\"side\">\n    <div class=\"panel\"><h2>Garde</h2><canvas id=\"hold\" width=\"120\" height=\"70\"></canvas></div>\n    <div class=\"panel\"><h2>Suivant</h2><canvas id=\"next\" width=\"120\" height=\"70\"></canvas></div>\n    <div class=\"panel\"><h2>Score</h2><div class=\"value\" id=\"score\">0</div></div>\n    <div class=\"panel\"><h2>Lignes</h2><div class=\"value\" id=\"lines\">0</div></div>\n    <div class=\"panel\"><h2>Niveau</h2><div class=\"value\" id=\"level\">1</div></div>\n    <div class=\"panel hint\">\n      &#8592; &#8594; : d&eacute;placer<br>\n      &#8595; : descente rapide<br>\n      &#8593; / X : tourner<br>\n      Z : tourner (inverse)<br>\n      Espace : chute instantan&eacute;e<br>\n      C : garder la pi&egrave;ce<br>\n      P : pause &mdash; Entr&eacute;e : rejouer\n    </div>\n  </div>\n</div>\n<div class=\"touch\">\n  <button data-key=\"ArrowLeft\" aria-label=\"Gauche\">&#8592;</button>\n  <button data-key=\"ArrowDown\" aria-label=\"Descendre\">&#8595;</button>\n  <button data-key=\"ArrowUp\" aria-label=\"Tourner\">&#10227;</button>\n  <button data-key=\"Space\" aria-label=\"Chute\">&#10515;</button>\n  <button data-key=\"ArrowRight\" aria-label=\"Droite\">&#8594;</button>\n</div>";
   const style = document.createElement('style');
   style.textContent = CSS;
   document.head.appendChild(style);
@@ -433,6 +433,41 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('mouseup', release);
     btn.addEventListener('mouseleave', release);
   });
+  
+  const touchCapable = (window.matchMedia && matchMedia('(pointer: coarse)').matches) || 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  if (touchCapable) (document.getElementById('tetris-game') || document.body).classList.add('touch-on');
+  
+  let touchStart = null;
+  boardCanvas.addEventListener('touchstart', (e) => {
+    if (gameOver || paused) return;
+    const t = e.changedTouches[0];
+    touchStart = { x: t.clientX, y: t.clientY, t: performance.now(), lastX: t.clientX, lastY: t.clientY };
+  }, { passive: true });
+  boardCanvas.addEventListener('touchmove', (e) => {
+    if (!touchStart || gameOver || paused) return;
+    e.preventDefault();
+    const t = e.changedTouches[0];
+    if (Math.abs(t.clientX - touchStart.lastX) >= BLOCK) {
+      move(t.clientX > touchStart.lastX ? 1 : -1);
+      touchStart.lastX = t.clientX;
+    }
+    if (t.clientY - touchStart.lastY >= BLOCK) {
+      softDrop = true;
+      drop();
+      softDrop = false;
+      touchStart.lastY = t.clientY;
+    }
+  }, { passive: false });
+  boardCanvas.addEventListener('touchend', (e) => {
+    if (!touchStart) return;
+    const dt = performance.now() - touchStart.t;
+    const t = e.changedTouches[0];
+    const dx = Math.abs(t.clientX - touchStart.x);
+    const dy = t.clientY - touchStart.y;
+    if (dx < 12 && Math.abs(dy) < 12 && dt < 300) tryRotate(1);
+    else if (dy > 60 && dt < 250) hardDrop();
+    touchStart = null;
+  }, { passive: true });
   
   grid = newGrid();
   refillBag();

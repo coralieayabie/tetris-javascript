@@ -15,6 +15,7 @@
 #tetris-game .board-wrap { position: relative; }
 #tetris-game canvas#board {
   background: #05050c;
+  touch-action: none;
   border: 2px solid var(--border);
   border-radius: 6px;
   display: block;
@@ -70,6 +71,8 @@
   #tetris-game .touch { display: flex; }
   #tetris-game .hint { display: none; }
 }
+#tetris-game.touch-on .touch { display: flex; }
+#tetris-game.touch-on .hint { display: none; }
 @media (max-width: 560px) {
   #tetris-game .game { gap: 8px; }
   #tetris-game .side { width: 108px; }
