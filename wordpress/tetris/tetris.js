@@ -423,6 +423,7 @@ if (touchCapable) (document.getElementById('tetris-game') || document.body).clas
 
 let touchStart = null;
 let lastTap = -Infinity;
+let tapTimer = null;
 boardCanvas.addEventListener('touchstart', (e) => {
   if (gameOver || paused) return;
   const t = e.changedTouches[0];
@@ -452,11 +453,17 @@ boardCanvas.addEventListener('touchend', (e) => {
   if (dx < 12 && Math.abs(dy) < 12 && dt < 300) {
     const now = performance.now();
     if (now - lastTap < 300) {
+      clearTimeout(tapTimer);
+      tapTimer = null;
       hardDrop();
       lastTap = -Infinity;
     } else {
-      tryRotate(1);
       lastTap = now;
+      clearTimeout(tapTimer);
+      tapTimer = setTimeout(() => {
+        tapTimer = null;
+        tryRotate(1);
+      }, 300);
     }
   }
   else if (dy > 60 && dt < 250) hardDrop();
