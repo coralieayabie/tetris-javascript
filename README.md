@@ -27,6 +27,15 @@ Deux méthodes propres :
 
 (Variante manuelle en deux morceaux : [`page-markup.html`](wordpress/cjtoolbox/page-markup.html) dans un bloc « HTML personnalisé » de la page + [`game.js`](wordpress/cjtoolbox/game.js) dans le champ JS.)
 
+### Dépannage cjtoolbox
+
+- **Symptôme** : la page affiche le code JS en texte + des éléments de jeu en vrac → le snippet a été collé **dans le contenu de la page WordPress** au lieu du champ JS du plugin. WordPress (wpautop/wptexturize) détruit tout JS collé dans une page.
+- **Fix** : vider entièrement la page `/tetris/` (comme la page casse-brique, vide) et coller `tetris-snippet.js` uniquement dans le champ JS de `wp-admin/admin.php?page=cjtoolbox`. Le snippet ne s'active que sur les URL contenant `/tetris/`.
+- Si malgré tout ça ne marche pas : méthode la plus fiable, aucun JS à coller — upload `index.html` en statique (ex. `/tetris-game/index.html` via FTP) + bloc HTML personnalisé dans la page :
+  ```html
+  <iframe src="/tetris-game/index.html" width="500" height="700" style="border:0"></iframe>
+  ```
+
 **2. Fichier statique + iframe** — upload `index.html` tel quel à la racine du site (ex. `/tetris-game/index.html` via FTP), puis dans la page WordPress (bloc HTML personnalisé) :
 
 ```html
