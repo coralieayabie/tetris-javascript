@@ -1,0 +1,76 @@
+#tetris-game {
+  --bg: #1b1b30;
+  --panel: #15152a;
+  --border: #2d2d52;
+  --text: #e6e6ff;
+  box-sizing: border-box;
+  color: var(--text);
+  font-family: "Segoe UI", Arial, sans-serif;
+  user-select: none;
+  touch-action: manipulation;
+  padding: 16px 0;
+}
+#tetris-game * { box-sizing: border-box; margin: 0; padding: 0; }
+#tetris-game .game { display: flex; gap: 14px; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+#tetris-game .board-wrap { position: relative; }
+#tetris-game canvas#board {
+  background: #05050c;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  display: block;
+  height: min(600px, 82vh);
+  width: auto;
+}
+#tetris-game .overlay {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: rgba(5, 5, 16, 0.85);
+  border-radius: 6px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+#tetris-game .overlay.show { display: flex; }
+#tetris-game .overlay small { font-size: 13px; font-weight: normal; color: #aaaacc; }
+#tetris-game .side { display: flex; flex-direction: column; gap: 10px; width: 150px; }
+#tetris-game .panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+}
+#tetris-game .panel h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #8a8ac0;
+  margin-bottom: 6px;
+}
+#tetris-game .panel .value { font-size: 22px; font-weight: bold; font-variant-numeric: tabular-nums; }
+#tetris-game .panel canvas { display: block; margin: 0 auto; }
+#tetris-game .hint { font-size: 11px; color: #8a8ac0; line-height: 1.8; }
+#tetris-game .touch { display: none; margin-top: 12px; gap: 8px; flex-wrap: wrap; justify-content: center; max-width: 320px; margin-left: auto; margin-right: auto; }
+#tetris-game .touch button {
+  width: 54px;
+  height: 54px;
+  font-size: 22px;
+  background: #1d1d3a;
+  color: #e6e6ff;
+  border: 1px solid #3a3a66;
+  border-radius: 10px;
+}
+#tetris-game .touch button:active { background: #33336a; }
+@media (pointer: coarse) {
+  #tetris-game .touch { display: flex; }
+  #tetris-game .hint { display: none; }
+}
+@media (max-width: 560px) {
+  #tetris-game .game { gap: 8px; }
+  #tetris-game .side { width: 108px; }
+}
