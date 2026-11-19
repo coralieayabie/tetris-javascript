@@ -55,6 +55,7 @@ Deux méthodes propres :
 | C | Garder la pièce (hold) |
 | P | Pause |
 | Entrée | Rejouer après une partie terminée |
+| Tactile | glisse ← → : déplacer · tape : tourner · glisse ↓ vite : chute instantanée · boutons sous le plateau |
 
 Sur mobile / écran tactile, des boutons tactiles apparaissent sous le plateau.
 
