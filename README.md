@@ -2,7 +2,7 @@
 
 Un Tetris complet en HTML/CSS/JavaScript pur, sans aucune dépendance : un seul fichier [`index.html`](index.html).
 
-![Capture d'écran du jeu](screenshot.png)
+![Capture d'écran du jeu](screenshot.svg)
 
 ## Jouer
 
