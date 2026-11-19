@@ -423,6 +423,7 @@ const touchCapable = (window.matchMedia && matchMedia('(pointer: coarse)').match
 if (touchCapable) (document.getElementById('tetris-game') || document.body).classList.add('touch-on');
 
 let touchStart = null;
+let lastTap = -Infinity;
 boardCanvas.addEventListener('touchstart', (e) => {
   if (gameOver || paused) return;
   const t = e.changedTouches[0];
@@ -449,7 +450,18 @@ boardCanvas.addEventListener('touchend', (e) => {
   const t = e.changedTouches[0];
   const dx = Math.abs(t.clientX - touchStart.x);
   const dy = t.clientY - touchStart.y;
-  if (dx < 12 && Math.abs(dy) < 12 && dt < 300) tryRotate(1);
+  if (dx < 12 && Math.abs(dy) < 12 && dt < 300) {
+    const now = performance.now();
+    if (now - lastTap < 300) {
+      softDrop = true;
+      drop();
+      softDrop = false;
+      lastTap = -Infinity;
+    } else {
+      tryRotate(1);
+      lastTap = now;
+    }
+  }
   else if (dy > 60 && dt < 250) hardDrop();
   touchStart = null;
 }, { passive: true });
