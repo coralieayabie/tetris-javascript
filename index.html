@@ -29,6 +29,7 @@ h1 {
 .board-wrap { position: relative; }
 canvas#board {
   background: #05050c;
+  touch-action: none;
   border: 2px solid #2d2d52;
   border-radius: 6px;
   display: block;
@@ -84,6 +85,8 @@ canvas#board {
   .touch { display: flex; }
   .hint { display: none; }
 }
+body.touch-on .touch { display: flex; }
+body.touch-on .hint { display: none; }
 @media (max-width: 560px) {
   .game { gap: 8px; }
   .side { width: 108px; }
@@ -114,7 +117,8 @@ canvas#board {
       Z : tourner (inverse)<br>
       Espace : chute instantan&eacute;e<br>
       C : garder la pi&egrave;ce<br>
-      P : pause &mdash; Entr&eacute;e : rejouer
+      P : pause &mdash; Entr&eacute;e : rejouer<br>
+      Tactile : glisse &#8592; &#8594; d&eacute;placer, tap = tourner, double tap = descente rapide, glisse &#8595; vite = chute
     </div>
   </div>
 </div>
@@ -550,6 +554,7 @@ const touchCapable = (window.matchMedia && matchMedia('(pointer: coarse)').match
 if (touchCapable) (document.getElementById('tetris-game') || document.body).classList.add('touch-on');
 
 let touchStart = null;
+let lastTap = -Infinity;
 boardCanvas.addEventListener('touchstart', (e) => {
   if (gameOver || paused) return;
   const t = e.changedTouches[0];
@@ -576,7 +581,18 @@ boardCanvas.addEventListener('touchend', (e) => {
   const t = e.changedTouches[0];
   const dx = Math.abs(t.clientX - touchStart.x);
   const dy = t.clientY - touchStart.y;
-  if (dx < 12 && Math.abs(dy) < 12 && dt < 300) tryRotate(1);
+  if (dx < 12 && Math.abs(dy) < 12 && dt < 300) {
+    const now = performance.now();
+    if (now - lastTap < 300) {
+      softDrop = true;
+      drop();
+      softDrop = false;
+      lastTap = -Infinity;
+    } else {
+      tryRotate(1);
+      lastTap = now;
+    }
+  }
   else if (dy > 60 && dt < 250) hardDrop();
   touchStart = null;
 }, { passive: true });

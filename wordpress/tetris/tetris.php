@@ -41,7 +41,7 @@ function tetris_shortcode() {
         Espace : chute instantan&eacute;e<br>
         C : garder la pi&egrave;ce<br>
         P : pause &mdash; Entr&eacute;e : rejouer<br>
-        Tactile : glisse &#8592; &#8594; d&eacute;placer, tape = tourner, glisse &#8595; vite = chute
+                Tactile : glisse &#8592; &#8594; d&eacute;placer, tap = tourner, double tap = descente rapide, glisse &#8595; vite = chute
       </div>
     </div>
   </div>
