@@ -20,10 +20,12 @@ Deux méthodes propres :
 2. Active « Tetris » dans l'admin WordPress (*Extensions*) ;
 3. Crée une page et mets-y le shortcode `[tetris]`.
 
-**3. Plugin de JS personnalisé (type cjtoolbox)** — si tu utilises un plugin qui ne prend que du JS (`wp-admin/admin.php?page=cjtoolbox`), ne colle **jamais** le fichier HTML entier : colle séparément :
+**3. Plugin de JS personnalisé (type cjtoolbox) — comme le casse-brique** : le casse-brique fonctionne avec une page WordPress **vide** + un snippet JS pur qui construit tout le DOM lui-même. Fais pareil pour Tetris :
 
-- dans la page `/tetris/` (éditeur bloc → bloc « HTML personnalisé ») : le contenu de [`wordpress/cjtoolbox/page-markup.html`](wordpress/cjtoolbox/page-markup.html) (balisage + `<style>` scopé, **sans** `<script>`) — remplace tout l'ancien contenu mutilé ;
-- dans le champ JS du plugin : le contenu de [`wordpress/cjtoolbox/game.js`](wordpress/cjtoolbox/game.js) (JS pur, sans balises `<script>`, enveloppé dans `DOMContentLoaded`).
+- vide complètement le contenu de la page `/tetris/` (supprime l'ancien HTML mutilé) ;
+- dans `wp-admin/admin.php?page=cjtoolbox`, colle le contenu de [`wordpress/cjtoolbox/tetris-snippet.js`](wordpress/cjtoolbox/tetris-snippet.js) — **un seul fichier JS pur, jamais le HTML entier** : il injecte le CSS scopé + le markup dans `#tetris-game` et lance le jeu, uniquement sur les pages dont l'URL contient `/tetris/`.
+
+(Variante manuelle en deux morceaux : [`page-markup.html`](wordpress/cjtoolbox/page-markup.html) dans un bloc « HTML personnalisé » de la page + [`game.js`](wordpress/cjtoolbox/game.js) dans le champ JS.)
 
 **2. Fichier statique + iframe** — upload `index.html` tel quel à la racine du site (ex. `/tetris-game/index.html` via FTP), puis dans la page WordPress (bloc HTML personnalisé) :
 
